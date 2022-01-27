@@ -4,7 +4,7 @@ project(
   Messenger
   VERSION 1.0
   DESCRIPTION "UDP-based messaging"
-  LANGUAGES CXX
+  LANGUAGES C CXX
 )
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
