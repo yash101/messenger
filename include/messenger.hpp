@@ -1,5 +1,5 @@
-#ifndef _MESSENGER_HPP
-#define _MESSENGER_HPP
+#ifndef _MESSENGER_MESSENGER_HPP
+#define _MESSENGER_MESSENGER_HPP
 
 #include "messenger.h"
 

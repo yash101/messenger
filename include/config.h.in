@@ -1,0 +1,6 @@
+#ifndef _MESSENGER_CONFIG_H
+#define _MESSENGER_CONFIG_H
+
+#define ENABLE_IPV6 
+
+#endif
