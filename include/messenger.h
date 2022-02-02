@@ -37,8 +37,6 @@ typedef struct messenger_connection_t {
  */
 typedef struct messenger_client_t {
   struct messenger_connection_t connection;
-
-  int ipv6;                           ///< enable / disable ipv6?
 } messenger_client_t;
 
 /**
@@ -53,7 +51,9 @@ typedef struct messenger_server_t {
   
   socket_handle_t socket;             ///< ipv4 socket handle
   socket_handle_t socket6;            ///< ipv6 socket handle
-  uint16_t port;
+  uint16_t port;                      ///< Port to listen on
+
+  int ipv6;                           ///< enable / disable ipv6?
 } messenger_server_t;
 
 /**
@@ -107,10 +107,12 @@ messenger_connection_destroy(
 /**
  * @brief Enables / disables ipv6 (default enabled)
  * 
+ * @param connection Connection object
  * @param enable 1 = on, 0 = off
  */
 void
 messenger_connection_ipv6(
+  messenger_connection_t* connection,
   int enable
 );
 
@@ -148,6 +150,18 @@ messenger_server_bind(
   uint16_t port
 );
 
+/**
+ * @brief Emables / disables ipv6
+ * 
+ * @param server Pointer to the server object
+ * @param enable 1 = on, 0 = off; default = 1
+ */
+void
+messenger_server_ipv6(
+  messenger_server_t* server,
+  int enable
+);
+
 
 /**
  * @brief Initializes a messenger client
@@ -168,6 +182,18 @@ messenger_client_create(
 void
 messenger_client_destroy(
   messenger_client_t* client
+);
+
+/**
+ * @brief Enables or disables ipv6
+ * 
+ * @param client Pointer to client
+ * @param enable 1 = on; 0 = off
+ */
+void
+messenger_client_ipv6(
+  messenger_client_t* client,
+  int enable
 );
 
 /**

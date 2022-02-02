@@ -15,7 +15,10 @@ const char* error_messages[] =
   "Socket create failure"
 };
 
-const char* messenger_error_msg_get(int errno)
+const char*
+messenger_error_msg_get(
+  int errno
+)
 {
   if (errno >= sizeof(error_messages) / sizeof(error_messages[0]))
   {
@@ -25,7 +28,8 @@ const char* messenger_error_msg_get(int errno)
   return error_messages[errno];
 }
 
-messenger_error_t messenger_error_create(
+messenger_error_t
+messenger_error_create(
   messenger_error_t* error,
   int status
 )
@@ -47,7 +51,10 @@ messenger_error_t messenger_error_create(
 
 
 
-messenger_error_t messenger_connection_create(messenger_connection_t* connection)
+messenger_error_t
+messenger_connection_create(
+  messenger_connection_t* connection
+)
 {
   connection->addr_local = NULL;
   connection->addr_local6 = NULL;
@@ -60,7 +67,10 @@ messenger_error_t messenger_connection_create(messenger_connection_t* connection
   connection->ipv6 = 1;
 }
 
-void messenger_connection_destroy(messenger_connection_t* connection)
+void
+messenger_connection_destroy(
+  messenger_connection_t* connection
+)
 {
   if (connection->socket != messenger_DEFAULT_SOCKET)
   {
@@ -93,23 +103,13 @@ void messenger_connection_destroy(messenger_connection_t* connection)
   connection->socket6 = messenger_DEFAULT_SOCKET;
 }
 
-
-
-
-
-
-
-
-messenger_error_t messenger_server_create(messenger_server_t* server)
+void
+messenger_connection_ipv6(
+  messenger_connection_t* connection,
+  int enable
+)
 {
-}
-
-messenger_error_t messenger_client_create(messenger_client_t* client)
-{
-}
-
-void messenger_client_connect(messenger_client_t* client, const char* address, uint16_t port)
-{
+  connection->ipv6 = (enable) ? 1 : 0;
 }
 
 
@@ -118,15 +118,69 @@ void messenger_client_connect(messenger_client_t* client, const char* address, u
 
 
 
-void messenger_server_destroy(messenger_server_t* server)
+messenger_error_t
+messenger_client_create(
+  messenger_client_t* client
+)
+{
+  messenger_connection_create(&client->connection);
+}
+
+void
+messenger_client_destroy(
+  messenger_client_t* client
+)
+{
+  messenger_connection_destroy(&client->connection);
+}
+
+void
+messenger_client_ipv6(
+  messenger_client_t* client,
+  int enable
+) {
+  messenger_connection_ipv6(&client->connection, enable);
+}
+
+void
+messenger_client_connect(
+  messenger_client_t* client,
+  const char* address,
+  uint16_t port
+)
 {
 }
 
-void messenger_client_destroy(messenger_client_t* client)
+
+
+
+
+
+
+messenger_error_t
+messenger_server_create(
+  messenger_server_t* server
+)
+{
+  server->addr_local = NULL;
+  server->addr_local6 = NULL;
+
+  server->socket = messenger_DEFAULT_SOCKET;
+  server->socket6 = messenger_DEFAULT_SOCKET;
+}
+
+void
+messenger_server_destroy(
+  messenger_server_t* server
+)
 {
 }
 
-void messenger_server_bind(messenger_server_t* server, uint16_t port)
+void
+messenger_server_bind(
+  messenger_server_t* server,
+  uint16_t port
+)
 {
 }
 
