@@ -15,22 +15,6 @@ typedef struct messenger_error_t {
 } messenger_error_t;
 
 /**
- * @brief Connection object - holds data required by a connection
- */
-typedef struct messenger_connection_t {
-  struct sockaddr_in* addr_local;     ///< ipv4 local address structure
-  struct sockaddr_in* addr_remote;    ///< ipv4 remote address structure
-
-  struct sockaddr_in6* addr_local6;   ///< ipv6 local address structure
-  struct sockaddr_in6* addr_remote6;  ///< ipv6 local address structure
-  
-  socket_handle_t socket;             ///< Socket handle
-  socket_handle_t socket6;            ///< ipv6 socket handle
-
-  int ipv6;                           ///< enable / disable ipv6?
-} messenger_connection_t;
-
-/**
  * @brief messenger protocol client structure
  * 
  * Manages and provides access to functions to connect to a messenger protocol server
