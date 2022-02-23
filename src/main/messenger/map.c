@@ -2,11 +2,17 @@
 
 #include <stdlib.h>
 
+#define BLACK 0
+#define RED 1
+
 void messenger_map_node_init(struct messenger_map_node_t* node)
 {
   if (!node) return;
+
   node->left = NULL;
   node->right = NULL;
+  node->color = BLACK;
+
   node->key = NULL;
   node->value = NULL;
 }
@@ -51,7 +57,52 @@ void* messenger_map_search(struct messenger_map_t* map, void* key)
   return NULL;
 }
 
+int messenger_map_insert(struct messenger_map_t* map, void* key, void* value)
+{
+  if (!map) return -1;
 
+  struct messenger_map_node_t* insert = calloc(1, sizeof(*insert));
+  messenger_map_node_init(insert);
+  insert->key = key;
+  insert->value = value;
+  insert->color = RED;
+
+  // add as root node
+  if (map->root == NULL)
+  {
+    insert->color = BLACK;
+    map->root = insert;
+    map->count++;
+
+    return 0;
+  }
+
+  // find the correct location to place the new node at
+  struct messenger_map_node_t* n = map->root;
+  struct messenger_map_node_t* parent = NULL;
+  while (n)
+  {
+    int comparison = map->comparator(n->key, key);
+
+    // element already exists
+    if (comparison == 0)
+    {
+      messenger_map_node_destroy(insert);
+      free(insert);
+      return 1;
+    }
+
+    parent = n;
+    if (comparison < 0)
+    {
+      n = n->left;
+    }
+    else
+    {
+      n = n->right;
+    }
+  }
+}
 
 
 

@@ -5,6 +5,7 @@ typedef struct messenger_map_node_t
 {
   struct messenger_map_node_t* left;
   struct messenger_map_node_t* right;
+  int color;
 
   void* key;
   void* value;
