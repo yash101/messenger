@@ -51,7 +51,7 @@ messenger_server_bind(
   error = setsockopt(
     server->socket,
     SOL_SOCKET,
-    SO_REUSEADDR | SO_REUSEPORT,
+    SO_REUSEADDR,
     (void*) &opt,
     sizeof(opt)
   );

@@ -1,6 +1,7 @@
 add_library(
   messenger
   base.c
+  map.c
   client.c
   server.c
   connection.c
