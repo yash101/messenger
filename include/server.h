@@ -25,7 +25,8 @@ messenger_server_bind(
 
 struct messenger_error_t
 messenger_server_accept(
-  struct messenger_server_t* server
+  struct messenger_server_t* server,
+  struct messenger_connection_t* connection
 );
 
 void

@@ -1,3 +1,4 @@
+#include "messenger_base.h"
 #include "server.h"
 
 #include <stdint.h>
@@ -121,9 +122,9 @@ messenger_server_accept(
   connection->local = server->addr;
   int addrlen = sizeof(struct sockaddr_in6);
 
-  getpeername(server->socket, (struct sockaddr*) connection->remote, &addrlen);
+  getpeername(server->socket, (struct sockaddr*) connection->remote, (socklen_t*) &addrlen);
 
-  return messenger_error_t(0);
+  return messenger_error(0);
 }
 
 void

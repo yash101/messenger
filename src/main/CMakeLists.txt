@@ -1,4 +1,5 @@
 add_subdirectory(messenger)
+add_subdirectory(trial_and_error)
 
 # add_library(
 #   messengerpp
