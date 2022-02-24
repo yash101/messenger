@@ -72,10 +72,14 @@ int messenger_map_insert(struct messenger_map_t* map, void* key, void* value)
   insert->value = value;
   insert->color = RED;
 
+  map->count++;
+
   // add as root node
   if (map->root == NULL)
   {
     insert->color = BLACK;
+    map->root = insert;
+    return 0;
   }
 
   int comparison;
@@ -93,6 +97,7 @@ int messenger_map_insert(struct messenger_map_t* map, void* key, void* value)
     {
       messenger_map_node_destroy(insert);
       free(insert);
+      map->count--;
       return 1;
     }
 
