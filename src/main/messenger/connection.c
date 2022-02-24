@@ -1,6 +1,11 @@
 #include "connection.h"
 #include "messenger_base.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdlib.h>
 
 void
@@ -18,3 +23,7 @@ messenger_connection_init(
   connection->server = NULL;
   connection->client = NULL;
 }
+
+#ifdef __cplusplus
+}
+#endif

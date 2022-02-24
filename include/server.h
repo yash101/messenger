@@ -1,6 +1,11 @@
 #ifndef _MESSENGER_SERVER_H
 #define _MESSENGER_SERVER_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "messenger_base.h"
 #include "connection.h"
 
@@ -33,5 +38,9 @@ void
 messenger_server_destroy(
   struct messenger_server_t* server
 );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

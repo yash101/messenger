@@ -1,6 +1,11 @@
 #ifndef _MESSENGER_MAP_H
 #define _MESSENGER_MAP_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef struct messenger_map_node_t
 {
   struct messenger_map_node_t* left;
@@ -29,5 +34,9 @@ int messenger_map_insert(struct messenger_map_t* map, void* key, void* value);
 int messenger_map_remove(struct messenger_map_t* map, void** key, void** value);
 
 int messenger_map_comparator_int(void* key1, void* key2);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

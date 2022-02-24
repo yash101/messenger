@@ -1,3 +1,8 @@
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include "messenger_base.h"
 
 const char* error_messages[] =
@@ -43,3 +48,6 @@ messenger_error_create(
   return *error;
 }
 
+#ifdef __cplusplus
+}
+#endif

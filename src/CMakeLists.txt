@@ -1,5 +1,10 @@
 add_subdirectory(main)
-add_subdirectory(test)
+
+if (PACKAGE_TESTS)
+  enable_testing()
+  include(GoogleTest)
+  add_subdirectory(test)
+endif()
 
 source_group(
   TREE "${PROJECT_SOURCE_DIR}/include"

@@ -9,4 +9,3 @@ add_library(
 
 target_compile_features(messenger PRIVATE c_std_11)
 target_link_libraries(messenger OpenSSL::SSL)
-target_include_directories(messenger PUBLIC ../../../include)

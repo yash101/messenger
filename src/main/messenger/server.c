@@ -1,6 +1,11 @@
 #include "messenger_base.h"
 #include "server.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -139,3 +144,7 @@ messenger_server_destroy(
   server->socket = messenger_DEFAULT_SOCKET;
   server->addr = NULL;
 }
+
+#ifdef __cplusplus
+}
+#endif

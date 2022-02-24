@@ -1,6 +1,11 @@
 #ifndef _MESSENGER_BASE_H
 #define _MESSENGER_BASE_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef int socket_handle_t;
 const socket_handle_t messenger_DEFAULT_SOCKET = 0;
 
@@ -28,5 +33,9 @@ messenger_error_create(
 );
 
 #define messenger_error(status) messenger_error_create(NULL, status, __FILE__, __LINE__)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

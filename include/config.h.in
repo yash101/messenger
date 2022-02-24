@@ -1,6 +1,15 @@
 #ifndef _MESSENGER_CONFIG_H
 #define _MESSENGER_CONFIG_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #define ENABLE_IPV6 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
