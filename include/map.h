@@ -10,10 +10,12 @@ typedef struct messenger_map_node_t
 {
   struct messenger_map_node_t* left;
   struct messenger_map_node_t* right;
-  int color;
+  struct messenger_map_node_t* parent;
 
   void* key;
   void* value;
+
+  char color;
 } messenger_map_node_t;
 
 typedef int (*messenger_map_comparator_t)(void* key1, void* key2);

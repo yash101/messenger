@@ -49,4 +49,7 @@ TEST(testMap, testMapInsert)
 
   EXPECT_EQ(items.size(), sizeof(default_keys) / sizeof(default_keys[0]));
   EXPECT_EQ(map.count, items.size());
+
+  for (size_t i = 0; i < items.size(); i++)
+    EXPECT_EQ(items[i], default_values[i]);
 }
