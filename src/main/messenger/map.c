@@ -68,6 +68,17 @@ static struct messenger_map_node_t* _uncle(struct messenger_map_node_t* node)
   return _sibling(node->parent);
 }
 
+static struct messenger_map_node_t* _minValueNode(struct messenger_map_node_t* node)
+{
+  if (!node)
+    return node;
+
+  while (node->left)
+    node = node->left;
+
+  return node;
+}
+
 static void _messenger_map_left_rotate(struct messenger_map_t* map, struct messenger_map_node_t* x)
 {
   if (!map || !x)
@@ -271,16 +282,74 @@ struct messenger_map_node_t messenger_map_remove(struct messenger_map_t* map, vo
   struct messenger_map_node_t ret;
   messenger_map_node_init(&ret);
 
-  if (map->root == NULL)
+  struct messenger_map_node_t* current = messenger_map_search(map, key);
+
+  if (!current)
     return ret;
 
-  // find the node to delete
-  messenger_map_node_t* search = messenger_map_search(map, key);
-  if (search == map->root)
-  {
-  }
+  ret.key = current->key;
+  ret.value = current->value;
 
-  return ret;
+  if (!current->left && !current->right)
+  {
+    if (current == map->root)
+    {
+      map->root = NULL;
+      free(current);
+      return ret;
+    }
+    else
+    {
+      if (current->parent->left == current)
+        current->parent->left = NULL;
+      else
+        current->parent->right = NULL;
+    }
+    free(current);
+    return ret;
+  }
+  else if(current->left && current->right)
+  {
+    struct messenger_map_node_t* successor = _minValueNode(current->right);
+    // Swap the successor and current
+    if (successor->parent->left == successor)
+      successor->parent->left = NULL;
+    else
+      successor->parent->right = NULL;
+
+    if (current == map->root)
+      map->root = successor;
+    else if (current->parent->left == current)
+      current->parent->left = successor;
+    else
+      current->parent->right = successor;
+
+    successor->parent = current->parent;
+    successor->left = current->left;
+    successor->right = current->right;
+
+    free(current);
+    return ret;
+  }
+  else
+  {
+    struct messenger_map_node_t* child = (current->left) ? current->left : current->right;
+    if (current->parent == NULL)
+    {
+      map->root = child;
+    }
+    else if (current == current->parent->left)
+    {
+      current->parent->left = child;
+    }
+    else
+    {
+      current->parent->right = child;
+    }
+
+    free(current);
+    return ret;
+  }
 }
 
 int messenger_map_comparator_int(void* key1, void* key2)
