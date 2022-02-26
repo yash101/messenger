@@ -7,7 +7,7 @@ extern "C"
 #endif
 
 typedef int socket_handle_t;
-const socket_handle_t messenger_DEFAULT_SOCKET = 0;
+extern const socket_handle_t messenger_DEFAULT_SOCKET;
 
 /**
  * @brief Error object - contains a code and a status

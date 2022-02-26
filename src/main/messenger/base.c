@@ -48,6 +48,8 @@ messenger_error_create(
   return *error;
 }
 
+const socket_handle_t messenger_DEFAULT_SOCKET = 0;
+
 #ifdef __cplusplus
 }
 #endif
