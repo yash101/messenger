@@ -42,6 +42,32 @@ void messenger_map_init(struct messenger_map_t* map, messenger_map_comparator_t 
   map->count = 0;
 }
 
+static struct messenger_map_node_t* _grandparent(struct messenger_map_node_t* node)
+{
+  if (!node || !node->parent)
+    return NULL;
+
+  return node->parent->parent;
+}
+
+static struct messenger_map_node_t* _sibling(struct messenger_map_node_t* node)
+{
+  if (!node || !node->parent)
+    return NULL;
+
+  return (node->parent->left == node) ?
+        node->parent->right :
+        node->parent->left;
+}
+
+static struct messenger_map_node_t* _uncle(struct messenger_map_node_t* node)
+{
+  if (!node)
+    return NULL;
+
+  return _sibling(node->parent);
+}
+
 static void _messenger_map_left_rotate(struct messenger_map_t* map, struct messenger_map_node_t* x)
 {
   if (!map || !x)
@@ -98,7 +124,73 @@ static void _messenger_map_right_rotate(struct messenger_map_t* map, struct mess
   x->parent = y;
 }
 
-void* messenger_map_search(struct messenger_map_t* map, void* key)
+static void _messenger_map_rb_insert_fixup(struct messenger_map_t* map, struct messenger_map_node_t* node)
+{
+  while (node != map->root && node->parent->color == RED)
+  {
+    struct messenger_map_node_t* uncle = _uncle(node);
+
+    if (uncle && uncle->color == RED)
+    {
+      node->parent->color = BLACK;
+      uncle->color = BLACK;
+
+      struct messenger_map_node_t* gp = _grandparent(node);
+      while (gp)
+      {
+        gp->color = RED;
+        gp = _grandparent(gp);
+      }
+    }
+    else if(uncle && uncle->color == BLACK)
+    {
+      if (!_grandparent(node))
+        return;
+
+      // Case LL
+      if (node->parent == _grandparent(node)->left && node == node->parent->left)
+      {
+        char color = node->parent->color;
+        node->parent->color = _grandparent(node)->color;
+        _grandparent(node)->color = color;
+        _messenger_map_right_rotate(map, _grandparent(node));
+      }
+
+      // Case LR
+      if (node->parent == _grandparent(node)->left && node == node->parent->right)
+      {
+        char color = node->parent->color;
+        node->color = _grandparent(node)->color;
+        _grandparent(node)->color = color;
+        _messenger_map_left_rotate(map, node->parent);
+        _messenger_map_right_rotate(map, _grandparent(node));
+      }
+
+      // Case RR
+      if (node->parent == _grandparent(node)->right && node == node->parent->right)
+      {
+        char color = node->parent->color;
+        node->parent->color = _grandparent(node)->color;
+        _grandparent(node)->color = color;
+        _messenger_map_left_rotate(map, _grandparent(node));
+      }
+
+      // Case RL
+      if (node->parent == _grandparent(node)->right && node == node->parent->left)
+      {
+        char color = node->parent->color;
+        node->color = _grandparent(node)->color;
+        _grandparent(node)->color = color;
+        _messenger_map_right_rotate(map, node->parent);
+        _messenger_map_left_rotate(map, _grandparent(node));
+      }
+    }
+  }
+
+  map->root->color = BLACK;
+}
+
+struct messenger_map_node_t* messenger_map_search(struct messenger_map_t* map, void* key)
 {
   // invalid map / no elements
   if (!map || !map->root) return NULL;
@@ -108,14 +200,14 @@ void* messenger_map_search(struct messenger_map_t* map, void* key)
   {
     int comp = map->comparator(key, n->key);
     if (comp == 0) {
-      return n->value;
+      return n;
     } else if(comp < 0) {
       n = n->left;
     } else {
       n = n->right;
     }
   }
-  
+
   return NULL;
 }
 
@@ -136,9 +228,6 @@ int messenger_map_insert(struct messenger_map_t* map, void* key, void* value)
     map->root = insert;
     return 0;
   }
-
-  insert->color = RED;
-
 
   // BST search
   struct messenger_map_node_t* n = map->root;
@@ -171,16 +260,27 @@ int messenger_map_insert(struct messenger_map_t* map, void* key, void* value)
   else
     parent->right = insert;
 
-  // R-B Balancing: Coloring
-
-  // If x's parent is red
-  if (insert->parent->color == RED)
-  {
-    insert->parent->color = BLACK;
-    insert->parent->parent->color = RED;
-  }
+  // R-B Rebalance
+  _messenger_map_rb_insert_fixup(map, insert);
 
   return 0;
+}
+
+struct messenger_map_node_t messenger_map_remove(struct messenger_map_t* map, void* key)
+{
+  struct messenger_map_node_t ret;
+  messenger_map_node_init(&ret);
+
+  if (map->root == NULL)
+    return ret;
+
+  // find the node to delete
+  messenger_map_node_t* search = messenger_map_search(map, key);
+  if (search == map->root)
+  {
+  }
+
+  return ret;
 }
 
 int messenger_map_comparator_int(void* key1, void* key2)

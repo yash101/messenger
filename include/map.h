@@ -31,9 +31,9 @@ void messenger_map_node_init(struct messenger_map_node_t* node);
 void messenger_map_node_destroy(struct messenger_map_node_t* node);
 
 void messenger_map_init(struct messenger_map_t* map, messenger_map_comparator_t comparator);
-void* messenger_map_search(struct messenger_map_t* map, void* key);
 int messenger_map_insert(struct messenger_map_t* map, void* key, void* value);
-int messenger_map_remove(struct messenger_map_t* map, void** key, void** value);
+struct messenger_map_node_t* messenger_map_search(struct messenger_map_t* map, void* key);
+struct messenger_map_node_t messenger_map_remove(struct messenger_map_t* map, void* key);
 
 int messenger_map_comparator_int(void* key1, void* key2);
 
