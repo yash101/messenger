@@ -335,17 +335,11 @@ struct messenger_map_node_t messenger_map_remove(struct messenger_map_t* map, vo
   {
     struct messenger_map_node_t* child = (current->left) ? current->left : current->right;
     if (current->parent == NULL)
-    {
       map->root = child;
-    }
     else if (current == current->parent->left)
-    {
       current->parent->left = child;
-    }
     else
-    {
       current->parent->right = child;
-    }
 
     free(current);
     return ret;
