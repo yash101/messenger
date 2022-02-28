@@ -23,16 +23,6 @@ void messenger_map_node_init(struct messenger_map_node_t* node)
   node->value = NULL;
 }
 
-void messenger_map_node_destroy(struct messenger_map_node_t* node)
-{
-  if (!node) return;
-
-  messenger_map_node_destroy(node->left);
-  messenger_map_node_destroy(node->right);
-  node->left = NULL;
-  node->right = NULL;
-}
-
 void messenger_map_init(struct messenger_map_t* map, messenger_map_comparator_t comparator)
 {
   if (!map) return;
@@ -252,7 +242,6 @@ int messenger_map_insert(struct messenger_map_t* map, void* key, void* value)
     // element already exists
     if (comparison == 0)
     {
-      messenger_map_node_destroy(insert);
       free(insert);
       map->count--;
       return 1;
@@ -289,6 +278,7 @@ struct messenger_map_node_t messenger_map_remove(struct messenger_map_t* map, vo
 
   ret.key = current->key;
   ret.value = current->value;
+  map->count--;
 
   if (!current->left && !current->right)
   {

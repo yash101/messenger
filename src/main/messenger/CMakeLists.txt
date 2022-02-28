@@ -19,3 +19,6 @@ add_library(messenger_static STATIC $<TARGET_OBJECTS:messenger_obj>)
 
 target_link_libraries(messenger OpenSSL::SSL)
 target_link_libraries(messenger_static OpenSSL::SSL)
+
+add_library(Messenger::Messenger ALIAS messenger)
+add_library(Messenger::Messenger_static ALIAS messenger_static)

@@ -28,7 +28,6 @@ typedef struct messenger_map_t
 } messenger_map_t;
 
 void messenger_map_node_init(struct messenger_map_node_t* node);
-void messenger_map_node_destroy(struct messenger_map_node_t* node);
 
 void messenger_map_init(struct messenger_map_t* map, messenger_map_comparator_t comparator);
 int messenger_map_insert(struct messenger_map_t* map, void* key, void* value);
