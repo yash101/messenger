@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "map.h"
+#include "messenger/map.h"
 
 #include <vector>
 #include <iostream>

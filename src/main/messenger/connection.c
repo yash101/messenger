@@ -1,5 +1,5 @@
-#include "connection.h"
-#include "messenger_base.h"
+#include "messenger/connection.h"
+#include "messenger/messenger_base.h"
 
 #ifdef __cplusplus
 extern "C"

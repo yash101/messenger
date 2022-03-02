@@ -3,7 +3,7 @@ extern "C"
 {
 #endif
 
-#include "messenger_base.h"
+#include "messenger/messenger_base.h"
 
 const char* error_messages[] =
 {

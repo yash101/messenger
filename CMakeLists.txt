@@ -30,6 +30,7 @@ find_package(OpenSSL REQUIRED)
 include(FetchContent)
 
 add_subdirectory(src)
+add_subdirectory(include)
 
 install(
   TARGETS messenger messenger_static
@@ -37,6 +38,7 @@ install(
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   INCLUDES DESTINATION include
+  PUBLIC_HEADER DESTINATION include
 )
 
 include(CMakePackageConfigHelpers)

@@ -1,5 +1,5 @@
-#include "messenger_base.h"
-#include "server.h"
+#include "messenger/messenger_base.h"
+#include "messenger/server.h"
 
 #ifdef __cplusplus
 extern "C"

@@ -1,4 +1,4 @@
-#include "map.h"
+#include "messenger/map.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -260,8 +260,8 @@ int messenger_map_insert(struct messenger_map_t* map, void* key, void* value)
   else
     parent->right = insert;
 
-  // R-B Rebalance
-  _messenger_map_rb_insert_fixup(map, insert);
+//  // R-B Rebalance
+//  _messenger_map_rb_insert_fixup(map, insert);
 
   return 0;
 }

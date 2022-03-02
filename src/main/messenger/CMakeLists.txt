@@ -20,5 +20,17 @@ add_library(messenger_static STATIC $<TARGET_OBJECTS:messenger_obj>)
 target_link_libraries(messenger OpenSSL::SSL)
 target_link_libraries(messenger_static OpenSSL::SSL)
 
+#set_target_properties(
+#  messenger
+#  PROPERTIES
+#    PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/../../../include/messenger"
+#)
+
+#set_target_properties(
+#  messenger_static
+#  PROPERTIES
+#    PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/../../../include/messenger"
+#)
+
 add_library(Messenger::Messenger ALIAS messenger)
 add_library(Messenger::Messenger_static ALIAS messenger_static)
