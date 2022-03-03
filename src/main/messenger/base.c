@@ -12,7 +12,8 @@ const char* error_messages[] =
   "Socket create failure",
   "Setsockopt failure",
   "Already initialized",
-  "Bind failed"
+  "Bind failed",
+  "Invalid argument"
 };
 
 const char*

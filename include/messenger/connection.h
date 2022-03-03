@@ -19,10 +19,8 @@ typedef struct messenger_connection_t
   struct messenger_client_t* client;
 } messenger_connection_t;
 
-void
-messenger_connection_init(
-  struct messenger_connection_t* connection
-);
+void messenger_connection_init(struct messenger_connection_t* connection);
+void messenger_connection_destroy(struct messenger_connection_t* connection);
 
 #ifdef __cplusplus
 }

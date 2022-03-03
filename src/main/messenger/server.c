@@ -14,21 +14,29 @@ extern "C"
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-void
-messenger_server_init(
-  struct messenger_server_t* server,
-  unsigned short int port
-)
+void messenger_server_init(struct messenger_server_t* server, unsigned short int port)
 {
   server->addr = NULL;
   server->port = port;
   server->socket = messenger_DEFAULT_SOCKET;
 }
 
-struct messenger_error_t
-messenger_server_bind(
-  struct messenger_server_t* server
-)
+void messenger_server_destroy(struct messenger_server_t* server)
+{
+  if (server->socket != messenger_DEFAULT_SOCKET)
+  {
+    shutdown(server->socket, SHUT_RDWR);
+    close(server->socket);
+  }
+
+  if (server->addr)
+    free(server->addr);
+
+  server->socket = messenger_DEFAULT_SOCKET;
+  server->addr = NULL;
+}
+
+struct messenger_error_t messenger_server_bind(struct messenger_server_t* server)
 {
   int opt;
   int error;
@@ -113,36 +121,13 @@ messenger_server_bind(
   return messenger_error(0);
 }
 
-// accept works different since we are using UDP. shit!
-struct messenger_error_t
-messenger_server_accept(
-  struct messenger_server_t* server,
-  struct messenger_connection_t* connection
-)
+struct messenger_error_t messenger_server_recv_packet(struct messenger_server_t* server)
 {
-  if (!server || !connection)
-    return messenger_error(1);
+  if (!server || server->socket == messenger_DEFAULT_SOCKET)
+    return messenger_error(6);
 
-  messenger_connection_init(connection);
-  connection->local = server->addr;
-  int addrlen = sizeof(struct sockaddr_in6);
+  // Receive a packet
 
-  getpeername(server->socket, (struct sockaddr*) connection->remote, (socklen_t*) &addrlen);
-
-  return messenger_error(0);
-}
-
-void
-messenger_server_destroy(
-  struct messenger_server_t* server
-)
-{
-  shutdown(server->socket, SHUT_RDWR);
-  close(server->socket);
-  free(server->addr);
-
-  server->socket = messenger_DEFAULT_SOCKET;
-  server->addr = NULL;
 }
 
 #ifdef __cplusplus
