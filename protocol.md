@@ -38,23 +38,26 @@
 ```
 
 - Supported flags:
-    - Reliable:
-        - Ensure the message is delivered correctly and in order
-    - End:
+    - End - 0x01:
         - Last packet (only packet)
+    - Reliable - 0x02:
+        - Ensure the message is delivered correctly and in order
+    - Stream: (future) - 0x04
+        - Deliver as a stream instead of aggregating the entire message
 - Packet type: 0x02
 
 ### Packet n
 
 ```
-+---------------------------------+
-| 1  - packet type                |
-| 32 - last 32B ciphertext of msg |
++----------------------------------+
+| 1   - packet type                |
+| 32  - last 32B ciphertext of msg |
 +-----------ENCRYPTED-------------+
-| 1 - flags                       |
-| 1 - padding length (if end)     |
-| 0 - payload                     |
-+---------------------------------+
+| 1  - flags                       |
+| 1  - padding length (if end)     |
+| 0  - payload                     |
+| 32 - SHA256 - last packet        |
++----------------------------------+
 ```
 
 - Supported flags:
@@ -76,8 +79,10 @@
 +-----------------+
 ```
 
-- Payload gets reflected back to the sender
+- Packet type: 0x04
 - Padding is NULL
+- Flags:
+    - Ping - 0x01
 
 ### Close Connection
 
@@ -91,4 +96,7 @@
 +-----------------+
 ```
 
+- Packet type: 0x04
 - Padding is NULL
+- Flags:
+    - Close - 0x02
