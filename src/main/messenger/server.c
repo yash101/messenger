@@ -13,6 +13,7 @@ extern "C"
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <errno.h>
 
 void messenger_server_init(struct messenger_server_t* server, unsigned short int port)
 {
@@ -44,7 +45,7 @@ struct messenger_error_t messenger_server_bind(struct messenger_server_t* server
     return messenger_error(4);
   }
 
-  server->addr = (struct sockaddr_in6*) malloc(sizeof(struct sockaddr_in6));
+  server->addr = (struct sockaddr_in6*) calloc(1, sizeof(struct sockaddr_in6));
   if (!server->addr) {
     free(server->addr);
     return messenger_error(1);
@@ -52,29 +53,31 @@ struct messenger_error_t messenger_server_bind(struct messenger_server_t* server
 
   // create socket
   server->socket = socket(AF_INET6, SOCK_DGRAM, 0);
+
+  // Failed to create socket
   if (server->socket <= 0) {
+    int err = errno;
+
     server->socket = messenger_DEFAULT_SOCKET;
     free(server->addr);
     server->addr = NULL;
-    return messenger_error(2);
+
+    return messenger_error_errno(err);
   }
 
   // set reuseaddr and reuseport for the socket
   opt = 1;
-  error = setsockopt(
-    server->socket,
-    SOL_SOCKET,
-    SO_REUSEADDR,
-    (void*) &opt,
-    sizeof(opt)
-  );
+  error = setsockopt(server->socket, SOL_SOCKET, SO_REUSEADDR, (void*) &opt, sizeof(opt));
   if (error)
   {
+    int err = errno;
+
     close(server->socket);
     server->socket = messenger_DEFAULT_SOCKET;
     free(server->addr);
     server->addr = NULL;
-    return messenger_error(3);
+
+    return messenger_error_errno(err);
   }
 
   // allow ipv4 on ipv6 sockets
@@ -88,16 +91,18 @@ struct messenger_error_t messenger_server_bind(struct messenger_server_t* server
   );
   if (error)
   {
+    int err = errno;
+
     close(server->socket);
     server->socket = messenger_DEFAULT_SOCKET;
     free(server->addr);
     server->addr = NULL;
 
-    return messenger_error(3);
+    return messenger_error_errno(err);
   }
 
   // set the listen address
-  memset((void*) server->addr, 0x0, sizeof(*server->addr));
+  server->addr = {0};
   server->addr->sin6_family = AF_INET6;
   server->addr->sin6_port = htons(server->port);
   server->addr->sin6_addr = in6addr_any;

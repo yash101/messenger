@@ -5,6 +5,10 @@ extern "C"
 
 #include "messenger/messenger_base.h"
 
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+
 const char* error_messages[] =
 {
   "Success",
@@ -13,13 +17,19 @@ const char* error_messages[] =
   "Setsockopt failure",
   "Already initialized",
   "Bind failed",
-  "Invalid argument"
+  "Invalid argument",
+  "Permission deined",
+  "Address family not supported",
+  "File descriptor limit reached",
+  "Protocol not supported",
+  "Unknown Failure",
+  "Bad file descriptor",
+  "Invalid address",
+  "Not a socket",
+  "Unknown option"
 };
 
-const char*
-messenger_error_msg(
-  int errno
-)
+const char* messenger_error_msg(int err)
 {
   if (errno >= sizeof(error_messages) / sizeof(error_messages[0]))
   {
@@ -29,13 +39,7 @@ messenger_error_msg(
   return error_messages[errno];
 }
 
-messenger_error_t
-messenger_error_create(
-  messenger_error_t* error,
-  int status,
-  const char* file,
-  const int lineno
-)
+messenger_error_t messenger_error_create(messenger_error_t* error, int status, const char* file, const int lineno)
 {
   messenger_error_t err;
   if (!error)
@@ -47,6 +51,17 @@ messenger_error_create(
   error->lineno = lineno;
 
   return *error;
+}
+
+messenger_error_t messenger_error_from_errno(int err, const char* file, const int lineno)
+{
+  messenger_error_t ret;
+  ret.status = err + 64;
+  ret.message = strerror(err);
+  ret.file = file;
+  ret.lineno = lineno;
+
+  return ret;
 }
 
 const socket_handle_t messenger_DEFAULT_SOCKET = 0;

@@ -23,7 +23,6 @@ void messenger_server_init(struct messenger_server_t* server, unsigned short int
 void messenger_server_destroy(struct messenger_server_t* server);
 struct messenger_error_t messenger_server_bind(struct messenger_server_t* server);
 struct messenger_error_t messenger_server_recv_packet(struct messenger_server_t* server);
-
 void messenger_server_accept_handler(struct messenger_server_t* server);
 
 #ifdef __cplusplus
