@@ -82,13 +82,7 @@ struct messenger_error_t messenger_server_bind(struct messenger_server_t* server
 
   // allow ipv4 on ipv6 sockets
   opt = 0;
-  error = setsockopt(
-    server->socket,
-    IPPROTO_IPV6,
-    IPV6_V6ONLY,
-    (void*) &opt,
-    sizeof(opt)
-  );
+  error = setsockopt(server->socket, IPPROTO_IPV6, IPV6_V6ONLY, (void*) &opt, sizeof(opt));
   if (error)
   {
     int err = errno;
@@ -102,17 +96,13 @@ struct messenger_error_t messenger_server_bind(struct messenger_server_t* server
   }
 
   // set the listen address
-  server->addr = {0};
+
   server->addr->sin6_family = AF_INET6;
   server->addr->sin6_port = htons(server->port);
   server->addr->sin6_addr = in6addr_any;
 
   // bind to address
-  error = bind(
-    server->socket,
-    (struct sockaddr*) server->addr,
-    sizeof(struct sockaddr_in6)
-  );
+  error = bind(server->socket, (struct sockaddr*) server->addr, sizeof(struct sockaddr_in6));
 
   if (error) {
     close(server->socket);

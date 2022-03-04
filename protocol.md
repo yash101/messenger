@@ -29,9 +29,9 @@
 
 ```
 +------------------+
-| 1  - packet type |
 | 32 - IV          |
 +----ENCRYPTED-----+
+| 1  - packet type |
 | 1  - flags       |
 | 0  - payload     |
 +------------------+
@@ -50,9 +50,9 @@
 
 ```
 +----------------------------------+
-| 1   - packet type                |
 | 32  - last 32B ciphertext of msg |
-+-----------ENCRYPTED-------------+
++------------ENCRYPTED-------------+
+| 1  - packet type                 |
 | 1  - flags                       |
 | 1  - padding length (if end)     |
 | 0  - payload                     |
@@ -71,9 +71,9 @@
 
 ```
 +-----------------+
-| 1 - packet type |
-| 0 - payload     |
+| 32 - IV         |
 +----ENCRYPTED----+
+| 1 - packet type |
 | 8 - flags       |
 | 24 - padding    |
 +-----------------+
@@ -88,9 +88,9 @@
 
 ```
 +-----------------+
-| 1 - packet type |
 | 32 - IV         |
 +----ENCRYPTED----+
+| 1 - packet type |
 | 8 - flags       |
 | 24 - padding    |
 +-----------------+
@@ -100,3 +100,12 @@
 - Padding is NULL
 - Flags:
     - Close - 0x02
+
+## Encryption / Security
+
+- RSA-based key exchange
+- AES256 symmetric encryption for data
+- AES256-CTR used, one CTR per message
+- AES256-CBC used in messages
+- Messages can randomly (with a probability), nequest a new CTR to blur message boundaries
+
