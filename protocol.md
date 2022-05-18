@@ -23,6 +23,30 @@
     - Length: RSA block with random 
     - Payload: AES 256 key, encrypted via RSA
 
+## Connection initialization and Handshake
+
+### Hello: client &rarr; server
+
+#### Message Header
+
+```
++-------------------------------+
+| 1 - Packet type: 0x0          |
+| 2 - Protocol version - 0x0001 |
+| 2 - message length            |
+| ? - message  payload          |
++-------------------------------+
+```
+
+#### Message Payload
+
+```
++--------------------
+| 32 - Client random
+| 2  - Requested cipher
+| 
+```
+
 ## Message
 
 ### Packet 0
