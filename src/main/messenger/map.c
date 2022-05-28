@@ -1,4 +1,4 @@
-#include "messenger/map.h"
+#include "messenger/private/map.h"
 
 #ifdef __cplusplus
 extern "C"
