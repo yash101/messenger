@@ -4,7 +4,7 @@ set(
     map.c
     client.c
     server.c
-    connection.c
+    session.c
 )
 
 add_library(messenger_obj OBJECT ${messenger_src})
