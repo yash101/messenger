@@ -1,3 +1,6 @@
 [submodule "vendor/googletest"]
 	path = vendor/googletest
 	url = https://github.com/google/googletest
+[submodule "vendor/libwebsockets"]
+	path = vendor/libwebsockets
+	url = https://github.com/warmcat/libwebsockets.git

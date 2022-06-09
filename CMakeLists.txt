@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
+# Project Definition
 project(
   Messenger
   VERSION 1.0
@@ -7,15 +8,20 @@ project(
   LANGUAGES C CXX
 )
 
+# Output directories for outputs
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-option(BUILD_TESTS "Build tests" ON)
-option(BUILD_DOC "Build documentation" ON)
+# Build tests
+option(BUILD_TESTS "Build tests" OFF)
+# Build documentation
+option(BUILD_DOC "Build documentation" OFF)
 
+# Include directory for messenger
 include_directories(include)
 
+# Build documentation if enabled and Doxygen was found
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_DOC)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
   include(CTest)
@@ -26,7 +32,9 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_DOC)
   endif()
 endif()
 
+# OpenSSL
 find_package(OpenSSL REQUIRED)
+# FetchContent
 include(FetchContent)
 
 add_subdirectory(src)
