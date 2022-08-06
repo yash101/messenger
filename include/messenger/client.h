@@ -1,26 +1,41 @@
 #ifndef _MESSENGER_CLIENT_H
 #define _MESSENGER_CLIENT_H
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include <netinet/in.h>
 
 #include "base.h"
 #include "session.h"
 
-typedef struct messenger_client_t
+#ifdef __cplusplus
+
+namespace messenger
 {
-  struct messenger_session_t* session;
-} messenger_client_t;
+  class Client
+  {
+  public:
+    Client();
+    ~Client();
 
-void messenger_client_init(struct messenger_client_t* client);
-void messenger_client_destroy(struct messenger_client_t* client);
+    messenger_error_t dial(std::string address);
+  };
+}
 
-messenger_error_t messenger_client_dial(struct messenger_client_t* client, const char* address);
-struct messenger_session_t* messenger_client_get_session(struct messenger_client_t* client);
+#endif
 
 #ifdef __cplusplus
-} // extern "C"
+extern "C"
+{
 #endif
+
+typedef struct messenger_Client messenger_Client;
+
+void messenger_Client_init(struct messenger_Client* client);
+void messenger_Client_destroy(struct messenger_Client* client);
+messenger_error_t messenger_Client_dial(struct messenger_Client* client, const char* address);
+messenger_Session* messenger_Client_getSession(struct messenger_Client* client);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

@@ -1,10 +1,9 @@
 set(
   messenger_src
-    base.c
-    map.c
-    client.c
-    server.c
-    session.c
+    base.cpp
+    client.cpp
+    server.cpp
+    session.cpp
 )
 
 add_library(messenger_obj OBJECT ${messenger_src})
@@ -13,6 +12,7 @@ set_property(
   PROPERTY POSITION_INDEPENDENT_CODE 1
 )
 target_compile_features(messenger_obj PRIVATE c_std_11)
+target_compile_definitions(messenger_obj PRIVATE cxx_std_11)
 
 add_library(messenger SHARED $<TARGET_OBJECTS:messenger_obj>)
 add_library(messenger_static STATIC $<TARGET_OBJECTS:messenger_obj>)
