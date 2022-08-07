@@ -1,18 +1,18 @@
 #include "messenger/base.h"
 
-messenger::SystemException::SystemException() :
+MessengerSystemException::MessengerSystemException() :
   err_code(MessengerSystemExceptionCode::EXCEPTION_NONE),
   message("")
 { }
 
-messenger::SystemException::SystemException(
+MessengerSystemException::MessengerSystemException(
   MessengerSystemExceptionCode code
 ) :
   err_code(code),
   message("")
 { }
 
-messenger::SystemException::SystemException(
+MessengerSystemException::MessengerSystemException(
   std::string message,
   MessengerSystemExceptionCode code
 ) :
@@ -20,53 +20,49 @@ messenger::SystemException::SystemException(
   message(message)
 { }
 
-const char* messenger::SystemException::what() const throw()
+const char* MessengerSystemException::what() const throw()
 {
   return message.c_str();
 }
 
-const MessengerSystemExceptionCode messenger::SystemException::code() const throw()
+const MessengerSystemExceptionCode MessengerSystemException::code() const throw()
 {
   return err_code;
 }
 
 extern "C"
-struct SystemException* messenger_SystemException_new(
+struct MessengerSystemException* messenger_SystemException_new(
   const char* message,
   const MessengerSystemExceptionCode code
 )
 {
-  return reinterpret_cast<struct SystemException*>(new messenger::SystemException(std::string(message), code));
+  return new MessengerSystemException(std::string(message), code);
 }
 
 extern "C"
-struct SystemException* messenger_SystemException_destroy(
-  struct SystemException* ex
+struct MessengerSystemException* messenger_SystemException_destroy(
+  struct MessengerSystemException* ex
 )
 {
   if (ex)
-    delete reinterpret_cast<messenger::SystemException*>(ex);
+    delete ex;
   return nullptr;
 }
 
 extern "C"
 const char* messenger_SystemException_what(
-  struct SystemException* ex
+  struct MessengerSystemException* ex
 )
 {
-  auto exc = reinterpret_cast<messenger::SystemException*>(ex);
-  if (!exc)
-    return nullptr;
-  return exc->what();
+  return ex->what();
 }
 
 extern "C"
 const MessengerSystemExceptionCode messenger_SystemException_code(
-  struct SystemException* ex
+  struct MessengerSystemException* ex
 )
 {
-  auto exc = reinterpret_cast<messenger::SystemException*>(ex);
-  if (!exc)
+  if (!ex)
     return MessengerSystemExceptionCode::EXCEPTION_NONE;
-  return exc->code();
+  return ex->code();
 }

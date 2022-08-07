@@ -44,21 +44,18 @@ typedef enum MessengerSystemExceptionCode
  */
 #ifdef __cplusplus
 
-  namespace messenger
+  class MessengerSystemException : public std::exception
   {
-    class SystemException : public std::exception
-    {
-      MessengerSystemExceptionCode err_code;
-      std::string message;
-    public:
-      SystemException();
-      SystemException(MessengerSystemExceptionCode code);
-      SystemException(std::string message, MessengerSystemExceptionCode code);
+    MessengerSystemExceptionCode err_code;
+    std::string message;
+  public:
+    MessengerSystemException();
+    MessengerSystemException(MessengerSystemExceptionCode code);
+    MessengerSystemException(std::string message, MessengerSystemExceptionCode code);
 
-      virtual const char* what() const throw();
-      virtual const MessengerSystemExceptionCode code() const throw();
-    };
-  }
+    virtual const char* what() const throw();
+    virtual const MessengerSystemExceptionCode code() const throw();
+  };
 
 #endif
 
@@ -66,10 +63,10 @@ typedef enum MessengerSystemExceptionCode
   extern "C" {
 #endif
 
-struct SystemException* messenger_SystemException_new(const char* message, const MessengerSystemExceptionCode code);
-struct SystemException* messenger_SystemException_destroy(struct SystemException* ex);
-const char* messenger_SystemException_what(struct SystemException* ex);
-const MessengerSystemExceptionCode messenger_SystemException_code(struct SystemException* ex);
+struct MessengerSystemException* messenger_SystemException_new(const char* message, const MessengerSystemExceptionCode code);
+struct MessengerSystemException* messenger_SystemException_destroy(struct MessengerSystemException* ex);
+const char* messenger_SystemException_what(struct MessengerSystemException* ex);
+const MessengerSystemExceptionCode messenger_SystemException_code(struct MessengerSystemException* ex);
 
 #ifdef __cplusplus
   }

@@ -1,0 +1,4 @@
+#ifndef _MESSENGER_PROTOCOL_WS
+#define _MESSENGER_PROTOCOL_WS
+
+#endif

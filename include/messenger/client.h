@@ -6,19 +6,19 @@
 #include "base.h"
 #include "session.h"
 
+/**
+ *  C++ only
+ */
 #ifdef __cplusplus
 
-namespace messenger
-{
-  class Client
+  class MessengerClient
   {
   public:
-    Client();
-    ~Client();
+    MessengerClient();
+    ~MessengerClient();
 
-    messenger_error_t dial(std::string address);
+    void dial(std::string address);
   };
-}
 
 #endif
 
@@ -27,12 +27,11 @@ extern "C"
 {
 #endif
 
-typedef struct messenger_Client messenger_Client;
+void messenger_Client_init(struct MessengerClient* client);
+void messenger_Client_destroy(struct MessengerClient* client);
 
-void messenger_Client_init(struct messenger_Client* client);
-void messenger_Client_destroy(struct messenger_Client* client);
-messenger_error_t messenger_Client_dial(struct messenger_Client* client, const char* address);
-messenger_Session* messenger_Client_getSession(struct messenger_Client* client);
+// messenger_error_t messenger_Client_dial(struct messenger_Client* client, const char* address);
+// messenger_Session* messenger_Client_getSession(struct messenger_Client* client);
 
 #ifdef __cplusplus
 }

@@ -7,26 +7,19 @@
 /*
  *      TYPEDEFS
  */
-#ifdef __cplusplus
-typedef void (*MessengerHeartbeatCB)(messenger::Session* session);
-#else
-typedef void (*MessengerHeartbeatCB)(struct MessengerSession* session);
-#endif
+typedef void (MessengerSessionCB)(struct MessengerSessionEvent* event);
 
 #ifdef __cplusplus
 
-  namespace messenger
+  class MessengerSession
   {
-    class Session
-    {
-    public:
-      Session();
-      virtual ~Session();
+  public:
+    MessengerSession();
+    virtual ~MessengerSession();
 
-      struct sockaddr_in6 getRemoteAddress();
-      struct sockaddr_in6 getLocalAddress();
-    };
-  }
+    struct sockaddr_in6 getRemoteAddress();
+    struct sockaddr_in6 getLocalAddress();
+  };
 
 #endif
 
