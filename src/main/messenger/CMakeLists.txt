@@ -4,6 +4,7 @@ set(
     client.cpp
     server.cpp
     session.cpp
+    message.cpp
 )
 
 add_library(messenger_obj OBJECT ${messenger_src})

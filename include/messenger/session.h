@@ -1,8 +1,9 @@
 #ifndef _MESSENGER_SESSION_H
 #define _MESSENGER_SESSION_H
 
-#include "base.h"
 #include <netinet/in.h>
+#include "base.h"
+#include "wire_protocol.h"
 
 /*
  *      TYPEDEFS
@@ -11,14 +12,30 @@ typedef void (MessengerSessionCB)(struct MessengerSessionEvent* event);
 
 #ifdef __cplusplus
 
+  class MessengerSessionEvent
+  {
+  private:
+    std::string event_tp;
+  public:
+    std::string getType();
+  };
+
   class MessengerSession
   {
+  protected:
+    MessengerBasicWireProtocol* wp;
+
   public:
     MessengerSession();
     virtual ~MessengerSession();
 
-    struct sockaddr_in6 getRemoteAddress();
-    struct sockaddr_in6 getLocalAddress();
+    void setWireProtocol(MessengerBasicWireProtocol* protocol);
+
+    void send(MessengerMessage);
+    void on(std::string event, MessengerSessionCB callback);
+
+    MessengerBasicWireStream& stream();
+    void closeStream(MessengerBasicWireStream& stream);  
   };
 
 #endif

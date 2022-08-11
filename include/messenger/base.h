@@ -5,8 +5,12 @@
 #include <netinet/in.h>
 
 #ifdef __cplusplus
-#include <exception>
-#include <string>
+
+  #include <exception>
+  #include <string>
+  #include <vector>
+  #include <list>
+
 #endif
 
 /*
@@ -39,6 +43,16 @@ typedef enum MessengerSystemExceptionCode
   EXCEPTION_INVALID_ARGUMENT = 22,
 } MessengerSystemExceptionCode;
 
+/**
+ *    Typedefs
+ *    C++
+ */
+#ifdef __cplusplus
+
+  typedef std::vector<char> MessengerMessage;
+
+#endif
+
 /*
  *  C++ only classes (OOP implementation)
  */
@@ -46,8 +60,10 @@ typedef enum MessengerSystemExceptionCode
 
   class MessengerSystemException : public std::exception
   {
+  private:
     MessengerSystemExceptionCode err_code;
     std::string message;
+
   public:
     MessengerSystemException();
     MessengerSystemException(MessengerSystemExceptionCode code);
